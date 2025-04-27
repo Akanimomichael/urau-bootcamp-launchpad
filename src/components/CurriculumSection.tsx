@@ -1,7 +1,6 @@
-
 import { 
   Code, Laptop, Database, User, 
-  Calendar, Clock, Project 
+  Calendar, Clock, Projector 
 } from "lucide-react";
 
 const CurriculumSection = () => {
@@ -38,7 +37,7 @@ const CurriculumSection = () => {
     },
     {
       name: "DevOps",
-      icon: <Project className="h-10 w-10 mb-3 text-bootcamp-blue" />,
+      icon: <Projector className="h-10 w-10 mb-3 text-bootcamp-blue" />,
       description: "Understand continuous integration, deployment, and basic cloud infrastructure."
     },
     {
