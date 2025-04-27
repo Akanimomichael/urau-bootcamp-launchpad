@@ -2,12 +2,18 @@
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
+import ApplicationFormDialog from './ApplicationFormDialog';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const openApplicationForm = () => {
+    setIsFormOpen(true);
   };
 
   return (
@@ -25,7 +31,10 @@ const Navbar = () => {
           <a href="#project" className="text-bootcamp-darkgray hover:text-bootcamp-blue font-medium">Project</a>
           <a href="#testimonials" className="text-bootcamp-darkgray hover:text-bootcamp-blue font-medium">Testimonials</a>
           <a href="#faq" className="text-bootcamp-darkgray hover:text-bootcamp-blue font-medium">FAQ</a>
-          <Button className="bg-bootcamp-blue text-white hover:bg-bootcamp-lightblue">
+          <Button 
+            className="bg-bootcamp-blue text-white hover:bg-bootcamp-lightblue"
+            onClick={openApplicationForm}
+          >
             Apply Now
           </Button>
         </div>
@@ -48,12 +57,24 @@ const Navbar = () => {
             <a href="#project" className="text-bootcamp-darkgray hover:text-bootcamp-blue font-medium" onClick={toggleMenu}>Project</a>
             <a href="#testimonials" className="text-bootcamp-darkgray hover:text-bootcamp-blue font-medium" onClick={toggleMenu}>Testimonials</a>
             <a href="#faq" className="text-bootcamp-darkgray hover:text-bootcamp-blue font-medium" onClick={toggleMenu}>FAQ</a>
-            <Button className="bg-bootcamp-blue text-white hover:bg-bootcamp-lightblue w-full">
+            <Button 
+              className="bg-bootcamp-blue text-white hover:bg-bootcamp-lightblue w-full"
+              onClick={() => {
+                setIsMenuOpen(false);
+                openApplicationForm();
+              }}
+            >
               Apply Now
             </Button>
           </div>
         </div>
       )}
+
+      {/* Application Form Dialog */}
+      <ApplicationFormDialog 
+        isOpen={isFormOpen} 
+        onOpenChange={setIsFormOpen} 
+      />
     </nav>
   );
 };

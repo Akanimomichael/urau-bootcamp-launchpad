@@ -1,8 +1,16 @@
+
 import { ArrowRight, Laptop, User, Calendar, Clock, Code, Book, Award } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import ApplicationFormDialog from "./ApplicationFormDialog";
 
 const FeaturesSection = () => {
+  const [isFormOpen, setIsFormOpen] = useState(false);
+
+  const openApplicationForm = () => {
+    setIsFormOpen(true);
+  };
+
   const features = [
     {
       icon: <User className="h-6 w-6 text-bootcamp-blue" />,
@@ -59,13 +67,20 @@ const FeaturesSection = () => {
         </div>
 
         <div className="mt-16 text-center">
-          <Button className="bg-white text-bootcamp-blue hover:bg-white/90 px-8 py-6 text-lg font-medium" asChild>
-            <Link to="/apply">
-              Apply Today <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
+          <Button 
+            className="bg-white text-bootcamp-blue hover:bg-white/90 px-8 py-6 text-lg font-medium"
+            onClick={openApplicationForm}
+          >
+            Apply Today <ArrowRight className="ml-2 h-5 w-5" />
           </Button>
         </div>
       </div>
+
+      {/* Application Form Dialog */}
+      <ApplicationFormDialog 
+        isOpen={isFormOpen} 
+        onOpenChange={setIsFormOpen} 
+      />
     </section>
   );
 };
