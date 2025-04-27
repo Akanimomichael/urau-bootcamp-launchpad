@@ -1,23 +1,8 @@
-
 import { ArrowRight, Laptop, User, Calendar, Clock, Code, Book, Award } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const FeaturesSection = () => {
-  const [isRouterAvailable, setIsRouterAvailable] = useState(true);
-  
-  // Check if we're in a valid router context
-  useEffect(() => {
-    try {
-      // This will throw an error if we're not in a router context
-      useNavigate();
-    } catch (error) {
-      console.log("Router context not available, using anchor tags instead");
-      setIsRouterAvailable(false);
-    }
-  }, []);
-
   const features = [
     {
       icon: <User className="h-6 w-6 text-bootcamp-blue" />,
@@ -75,15 +60,9 @@ const FeaturesSection = () => {
 
         <div className="mt-16 text-center">
           <Button className="bg-white text-bootcamp-blue hover:bg-white/90 px-8 py-6 text-lg font-medium" asChild>
-            {isRouterAvailable ? (
-              <Link to="/apply">
-                Apply Today <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-            ) : (
-              <a href="/apply">
-                Apply Today <ArrowRight className="ml-2 h-5 w-5" />
-              </a>
-            )}
+            <Link to="/apply">
+              Apply Today <ArrowRight className="ml-2 h-5 w-5" />
+            </Link>
           </Button>
         </div>
       </div>
