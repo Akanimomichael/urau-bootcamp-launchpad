@@ -3,12 +3,20 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import ApplicationFormDialog from "./ApplicationFormDialog";
+import { useNavigate } from "react-router-dom";
 
 const CtaSection = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
 
+  const navigate = useNavigate()
+
   const openApplicationForm = () => {
     setIsFormOpen(true);
+  };
+
+  const handleFullApplication = () => {
+    navigate("/apply");
+    // onOpenChange(false);
   };
 
   return (
@@ -24,11 +32,12 @@ const CtaSection = () => {
           <div className="flex flex-col sm:flex-row justify-center gap-5">
             <Button 
               className="bg-white text-bootcamp-blue hover:bg-white/90 px-8 py-6 text-lg font-medium"
-              onClick={openApplicationForm}
+              // onClick={openApplicationForm}
+              onClick={handleFullApplication}
             >
               Apply Now <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
-            <Button variant="outline" className="border-white text-white hover:bg-white/10 px-8 py-6 text-lg font-medium">
+            <Button variant="outline" className="border-white text-white bg-transparent hover:bg-white/10 px-8 py-6 text-lg font-medium">
               Download Syllabus
             </Button>
           </div>

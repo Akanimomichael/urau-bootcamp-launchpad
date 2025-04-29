@@ -1,8 +1,16 @@
 
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
+
+  const navigate = useNavigate()
+
+  const handleFullApplication = () => {
+    navigate("/apply");
+    // onOpenChange(false);
+  };
   return (
     <section className="relative pt-24 pb-20 md:pt-32 md:pb-28 bg-gradient-to-br from-white via-gray-50 to-bootcamp-gray">
       <div className="container mx-auto px-4 flex flex-col-reverse md:flex-row items-center">
@@ -19,7 +27,9 @@ const HeroSection = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start pt-4">
-            <Button className="bg-bootcamp-blue hover:bg-bootcamp-lightblue text-white px-8 py-6 text-lg">
+            <Button className="bg-bootcamp-blue hover:bg-bootcamp-lightblue text-white px-8 py-6 text-lg"
+            onClick={handleFullApplication}
+            >
               Apply Now <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
             <Button variant="outline" className="border-bootcamp-blue text-bootcamp-blue hover:bg-bootcamp-blue/10 px-8 py-6 text-lg">

@@ -1,35 +1,34 @@
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { toast } from "sonner";
-import { 
-  CalendarIcon, 
-  User, 
-  Mail, 
-  Phone, 
-  MapPin, 
-  Book, 
-  Briefcase, 
-  MessageSquare, 
-  Search, 
-  Banknote, 
-  Copy, 
-  Upload, 
-  Check 
+import {
+  CalendarIcon,
+  User,
+  Mail,
+  Phone,
+  MapPin,
+  Book,
+  Briefcase,
+  MessageSquare,
+  Search,
+  Banknote,
+  Copy,
+  Upload,
+  Check,
 } from "lucide-react";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { 
-  Form, 
-  FormControl, 
-  FormDescription, 
-  FormField, 
-  FormItem, 
-  FormLabel, 
-  FormMessage 
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import {
   Select,
@@ -38,10 +37,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  RadioGroup,
-  RadioGroupItem
-} from "@/components/ui/radio-group";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
@@ -68,7 +64,7 @@ const formSchema = z.object({
   heardFrom: z.string(),
   paymentPlan: z.string(),
   paymentSlip: z.instanceof(File).optional(),
-  agreeTerms: z.boolean().refine(val => val === true, {
+  agreeTerms: z.boolean().refine((val) => val === true, {
     message: "You must agree to the terms and conditions",
   }),
 });
@@ -81,7 +77,9 @@ const ApplyPage = () => {
   const [progress, setProgress] = useState(33);
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [paymentSlipPreview, setPaymentSlipPreview] = useState<string | null>(null);
+  const [paymentSlipPreview, setPaymentSlipPreview] = useState<string | null>(
+    null
+  );
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -102,8 +100,8 @@ const ApplyPage = () => {
     // Simulate API request
     try {
       // This would be replaced with your actual API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
       toast.success("Application submitted successfully!", {
         description: "We'll confirm your payment and email you soon.",
       });
@@ -123,25 +121,36 @@ const ApplyPage = () => {
 
   const nextStep = () => {
     const currentStepFields: Record<number, string[]> = {
-      1: ["fullName", "email", "phone", "dateOfBirth", "gender", "address", "educationLevel", "occupation", "whyJoin", "heardFrom"],
+      1: [
+        "fullName",
+        "email",
+        "phone",
+        "dateOfBirth",
+        "gender",
+        "address",
+        "educationLevel",
+        "occupation",
+        "whyJoin",
+        "heardFrom",
+      ],
       2: ["paymentPlan"],
-      3: ["paymentSlip", "agreeTerms"]
+      3: ["paymentSlip", "agreeTerms"],
     };
 
     const fieldsToValidate = currentStepFields[step];
-    const isValid = fieldsToValidate.every(field => {
+    const isValid = fieldsToValidate.every((field) => {
       const result = form.trigger(field as any);
       return result;
     });
 
     if (isValid) {
-      setStep(prev => prev + 1);
+      setStep((prev) => prev + 1);
       setProgress(step === 1 ? 66 : 100);
     }
   };
 
   const prevStep = () => {
-    setStep(prev => prev - 1);
+    setStep((prev) => prev - 1);
     setProgress(step === 3 ? 66 : 33);
   };
 
@@ -149,7 +158,11 @@ const ApplyPage = () => {
     const file = e.target.files?.[0];
     if (file) {
       // Check file type
-      if (!['image/jpeg', 'image/png', 'image/gif', 'application/pdf'].includes(file.type)) {
+      if (
+        !["image/jpeg", "image/png", "image/gif", "application/pdf"].includes(
+          file.type
+        )
+      ) {
         toast.error("Invalid file type", {
           description: "Please upload an image or PDF file only.",
         });
@@ -165,9 +178,9 @@ const ApplyPage = () => {
       }
 
       form.setValue("paymentSlip", file);
-      
+
       // Generate preview for images
-      if (file.type.startsWith('image/')) {
+      if (file.type.startsWith("image/")) {
         const reader = new FileReader();
         reader.onloadend = () => {
           setPaymentSlipPreview(reader.result as string);
@@ -180,7 +193,8 @@ const ApplyPage = () => {
   };
 
   const copyBankDetails = () => {
-    const details = "Bank Name: First Bank\nAccount Number: 1234567890\nAccount Name: Tech BootCamp Ltd";
+    const details =
+      "Bank Name: First Bank\nAccount Number: 1234567890\nAccount Name: Tech BootCamp Ltd";
     navigator.clipboard.writeText(details);
     toast.success("Bank details copied to clipboard!");
   };
@@ -188,21 +202,43 @@ const ApplyPage = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
       <div className="container mx-auto">
-        <h1 className="text-3xl md:text-4xl font-bold text-center mb-2">Apply to Our BootCamp</h1>
-        <p className="text-center text-muted-foreground mb-8">Complete the application form and payment to secure your spot</p>
-        
+        <h1 className="text-3xl md:text-4xl font-bold text-center mb-2">
+          Apply to Our BootCamp
+        </h1>
+        <p className="text-center text-muted-foreground mb-8">
+          Complete the application form and payment to secure your spot
+        </p>
+
         <div className="max-w-4xl mx-auto">
           {/* Progress Tracker */}
           <div className="mb-10">
             <Progress value={progress} className="h-2 mb-2" />
             <div className="flex justify-between text-sm">
-              <div className={`${step >= 1 ? 'text-bootcamp-blue font-medium' : 'text-muted-foreground'}`}>
+              <div
+                className={`${
+                  step >= 1
+                    ? "text-bootcamp-blue font-medium"
+                    : "text-muted-foreground"
+                }`}
+              >
                 1. Personal Information
               </div>
-              <div className={`${step >= 2 ? 'text-bootcamp-blue font-medium' : 'text-muted-foreground'}`}>
+              <div
+                className={`${
+                  step >= 2
+                    ? "text-bootcamp-blue font-medium"
+                    : "text-muted-foreground"
+                }`}
+              >
                 2. Payment Details
               </div>
-              <div className={`${step >= 3 ? 'text-bootcamp-blue font-medium' : 'text-muted-foreground'}`}>
+              <div
+                className={`${
+                  step >= 3
+                    ? "text-bootcamp-blue font-medium"
+                    : "text-muted-foreground"
+                }`}
+              >
                 3. Upload & Submit
               </div>
             </div>
@@ -213,7 +249,9 @@ const ApplyPage = () => {
               {/* Step 1: Application Form */}
               {step === 1 && (
                 <div className="bg-white p-6 md:p-8 rounded-xl shadow-sm border border-gray-100">
-                  <h2 className="text-2xl font-bold mb-6">Personal Information</h2>
+                  <h2 className="text-2xl font-bold mb-6">
+                    Personal Information
+                  </h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <FormField
                       control={form.control}
@@ -240,7 +278,11 @@ const ApplyPage = () => {
                             <Mail className="h-4 w-4" /> Email Address
                           </FormLabel>
                           <FormControl>
-                            <Input type="email" placeholder="john@example.com" {...field} />
+                            <Input
+                              type="email"
+                              placeholder="john@example.com"
+                              {...field}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -276,7 +318,9 @@ const ApplyPage = () => {
                               <FormControl>
                                 <Button
                                   variant="outline"
-                                  className={`w-full pl-3 text-left font-normal ${!field.value && "text-muted-foreground"}`}
+                                  className={`w-full pl-3 text-left font-normal ${
+                                    !field.value && "text-muted-foreground"
+                                  }`}
                                 >
                                   {field.value ? (
                                     format(field.value, "PPP")
@@ -287,13 +331,17 @@ const ApplyPage = () => {
                                 </Button>
                               </FormControl>
                             </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0" align="start">
+                            <PopoverContent
+                              className="w-auto p-0"
+                              align="start"
+                            >
                               <Calendar
                                 mode="single"
                                 selected={field.value}
                                 onSelect={field.onChange}
                                 disabled={(date) =>
-                                  date > new Date() || date < new Date("1900-01-01")
+                                  date > new Date() ||
+                                  date < new Date("1900-01-01")
                                 }
                                 initialFocus
                               />
@@ -312,7 +360,10 @@ const ApplyPage = () => {
                           <FormLabel className="flex items-center gap-2">
                             <User className="h-4 w-4" /> Gender
                           </FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
                             <FormControl>
                               <SelectTrigger>
                                 <SelectValue placeholder="Select your gender" />
@@ -337,14 +388,19 @@ const ApplyPage = () => {
                           <FormLabel className="flex items-center gap-2">
                             <Book className="h-4 w-4" /> Education Level
                           </FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
                             <FormControl>
                               <SelectTrigger>
                                 <SelectValue placeholder="Select your education level" />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="highSchool">High School</SelectItem>
+                              <SelectItem value="highSchool">
+                                High School
+                              </SelectItem>
                               <SelectItem value="college">College</SelectItem>
                               <SelectItem value="graduate">Graduate</SelectItem>
                               <SelectItem value="other">Other</SelectItem>
@@ -364,7 +420,10 @@ const ApplyPage = () => {
                             <Briefcase className="h-4 w-4" /> Current Occupation
                           </FormLabel>
                           <FormControl>
-                            <Input placeholder="Software Developer" {...field} />
+                            <Input
+                              placeholder="Software Developer"
+                              {...field}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -377,18 +436,26 @@ const ApplyPage = () => {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel className="flex items-center gap-2">
-                            <Search className="h-4 w-4" /> How did you hear about us?
+                            <Search className="h-4 w-4" /> How did you hear
+                            about us?
                           </FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
                             <FormControl>
                               <SelectTrigger>
                                 <SelectValue placeholder="Select an option" />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="socialMedia">Social Media</SelectItem>
+                              <SelectItem value="socialMedia">
+                                Social Media
+                              </SelectItem>
                               <SelectItem value="friend">Friend</SelectItem>
-                              <SelectItem value="googleSearch">Google Search</SelectItem>
+                              <SelectItem value="googleSearch">
+                                Google Search
+                              </SelectItem>
                               <SelectItem value="other">Other</SelectItem>
                             </SelectContent>
                           </Select>
@@ -427,7 +494,8 @@ const ApplyPage = () => {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel className="flex items-center gap-2">
-                            <MessageSquare className="h-4 w-4" /> Why do you want to join the BootCamp?
+                            <MessageSquare className="h-4 w-4" /> Why do you
+                            want to join the BootCamp?
                           </FormLabel>
                           <FormControl>
                             <Textarea
@@ -448,11 +516,12 @@ const ApplyPage = () => {
               {step === 2 && (
                 <div className="bg-white p-6 md:p-8 rounded-xl shadow-sm border border-gray-100">
                   <h2 className="text-2xl font-bold mb-6">Payment Details</h2>
-                  
+
                   <div className="mb-8 p-4 bg-bootcamp-purple/10 rounded-lg border border-bootcamp-purple/20">
                     <h3 className="flex items-center text-lg font-semibold mb-2">
-                      <Banknote className="h-5 w-5 mr-2 text-bootcamp-purple" /> 
-                      BootCamp Price: <span className="ml-2 text-bootcamp-purple">₦200,000</span>
+                      <Banknote className="h-5 w-5 mr-2 text-bootcamp-purple" />
+                      BootCamp Price:{" "}
+                      <span className="ml-2 text-bootcamp-purple">$1,500</span>
                     </h3>
                     <p className="text-sm text-muted-foreground">
                       Select a payment plan that works best for you below
@@ -473,25 +542,46 @@ const ApplyPage = () => {
                           >
                             <div className="flex items-center space-x-2 border p-4 rounded-md hover:bg-gray-50 transition-colors">
                               <RadioGroupItem value="monthly" id="monthly" />
-                              <label htmlFor="monthly" className="flex flex-col cursor-pointer w-full">
-                                <span className="font-medium">Monthly Payment</span>
-                                <span className="text-sm text-muted-foreground">₦70,000 × 3 months</span>
+                              <label
+                                htmlFor="monthly"
+                                className="flex flex-col cursor-pointer w-full"
+                              >
+                                <span className="font-medium">
+                                  Monthly Payment
+                                </span>
+                                <span className="text-sm text-muted-foreground">
+                                  $500 × 3 months
+                                </span>
                               </label>
                             </div>
-                            
+
                             <div className="flex items-center space-x-2 border p-4 rounded-md hover:bg-gray-50 transition-colors">
                               <RadioGroupItem value="half" id="half" />
-                              <label htmlFor="half" className="flex flex-col cursor-pointer w-full">
-                                <span className="font-medium">Half Payment</span>
-                                <span className="text-sm text-muted-foreground">₦100,000 first payment + ₦100,000 later</span>
+                              <label
+                                htmlFor="half"
+                                className="flex flex-col cursor-pointer w-full"
+                              >
+                                <span className="font-medium">
+                                  Half Payment
+                                </span>
+                                <span className="text-sm text-muted-foreground">
+                                  $750 first payment + $750 later
+                                </span>
                               </label>
                             </div>
-                            
+
                             <div className="flex items-center space-x-2 border p-4 rounded-md hover:bg-gray-50 transition-colors">
                               <RadioGroupItem value="full" id="full" />
-                              <label htmlFor="full" className="flex flex-col cursor-pointer w-full">
-                                <span className="font-medium">Full Payment</span>
-                                <span className="text-sm text-muted-foreground">₦200,000 at once</span>
+                              <label
+                                htmlFor="full"
+                                className="flex flex-col cursor-pointer w-full"
+                              >
+                                <span className="font-medium">
+                                  Full Payment
+                                </span>
+                                <span className="text-sm text-muted-foreground">
+                                  $1,500 at once
+                                </span>
                               </label>
                             </div>
                           </RadioGroup>
@@ -500,17 +590,23 @@ const ApplyPage = () => {
                       </FormItem>
                     )}
                   />
-                  
+
                   <div className="mt-8">
                     <div className="rounded-md border border-gray-200 bg-gray-50">
                       <div className="p-5 space-y-2">
                         <h4 className="font-semibold">Bank Account Details</h4>
                         <div className="grid grid-cols-2 gap-2 text-sm">
-                          <span className="text-muted-foreground">Bank Name:</span>
+                          <span className="text-muted-foreground">
+                            Bank Name:
+                          </span>
                           <span>First Bank</span>
-                          <span className="text-muted-foreground">Account Number:</span>
+                          <span className="text-muted-foreground">
+                            Account Number:
+                          </span>
                           <span>1234567890</span>
-                          <span className="text-muted-foreground">Account Name:</span>
+                          <span className="text-muted-foreground">
+                            Account Name:
+                          </span>
                           <span>Tech BootCamp Ltd</span>
                         </div>
                         <Button
@@ -523,8 +619,13 @@ const ApplyPage = () => {
                         </Button>
                       </div>
                       <div className="border-t border-gray-200 px-5 py-3 text-sm text-muted-foreground">
-                        <p>• Payments are manually verified within 24-48 hours.</p>
-                        <p>• Ensure your full name on the payment matches the name you filled in the application form.</p>
+                        <p>
+                          • Payments are manually verified within 24-48 hours.
+                        </p>
+                        <p>
+                          • Ensure your full name on the payment matches the
+                          name you filled in the application form.
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -534,22 +635,24 @@ const ApplyPage = () => {
               {/* Step 3: Upload Payment Slip & Submit */}
               {step === 3 && (
                 <div className="bg-white p-6 md:p-8 rounded-xl shadow-sm border border-gray-100">
-                  <h2 className="text-2xl font-bold mb-6">Upload Payment Proof & Submit</h2>
-                  
+                  <h2 className="text-2xl font-bold mb-6">
+                    Upload Payment Proof & Submit
+                  </h2>
+
                   <div className="mb-6">
                     <div className="flex items-center gap-2 mb-2">
                       <Upload className="h-4 w-4" />
                       <span className="font-medium">Upload Payment Slip</span>
                     </div>
-                    
+
                     <div className="border-2 border-dashed border-gray-200 rounded-md p-8 text-center">
                       {paymentSlipPreview ? (
                         <div className="space-y-3">
                           <div className="mx-auto">
-                            <img 
-                              src={paymentSlipPreview} 
-                              alt="Payment slip preview" 
-                              className="max-h-48 mx-auto object-contain" 
+                            <img
+                              src={paymentSlipPreview}
+                              alt="Payment slip preview"
+                              className="max-h-48 mx-auto object-contain"
                             />
                           </div>
                           <p className="text-sm text-muted-foreground">
@@ -591,7 +694,7 @@ const ApplyPage = () => {
                       )}
                     </div>
                   </div>
-                  
+
                   <FormField
                     control={form.control}
                     name="agreeTerms"
@@ -608,7 +711,8 @@ const ApplyPage = () => {
                             I agree to the terms and conditions of the BootCamp
                           </FormLabel>
                           <FormDescription>
-                            By checking this, you confirm that all information provided is accurate.
+                            By checking this, you confirm that all information
+                            provided is accurate.
                           </FormDescription>
                           <FormMessage />
                         </div>
@@ -627,7 +731,7 @@ const ApplyPage = () => {
                 ) : (
                   <div></div>
                 )}
-                
+
                 {step < 3 ? (
                   <Button type="button" onClick={nextStep}>
                     Next Step
